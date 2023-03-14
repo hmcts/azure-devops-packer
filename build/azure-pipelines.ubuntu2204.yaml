@@ -8,7 +8,7 @@ trigger:
     exclude:
     - /**
 
-pr: none
+pr: master
 
 schedules:
 - cron: "0 0 1 * *"
@@ -33,19 +33,37 @@ pool:
 variables:
   - name: serviceConnection
     value: GlobalNetworkPeering
+  
+  - name: packerConfigFile
+    value: images/linux/ubuntu2204.pkr.hcl
+
+  - name: imageDefinition
+    value: devops-ubuntu
 
 ############################################
 # Packer Build. ############################
 stages:
-- stage: PackerBuild
-  displayName: Packer Build
-  jobs:
-  - job: PackerBuild
+- ${{ if contains(variables['Build.SourceBranch'], 'refs/pull') }}:
+  - stage: PackerCI
+    displayName: Packer CI
+    jobs:
+    - job: PackerCI
+      displayName: Packer CI
+      steps:
+      - template: /build/templates/packer-ci.yml
+        parameters:
+          packerConfigFile: $(packerConfigFile)
+
+- ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+  - stage: PackerBuild
     displayName: Packer Build
-    steps:
+    jobs:
+    - job: PackerBuild
+      displayName: Packer Build
+      steps:
       - template: /build/templates/packer-build.yml
         parameters:
           serviceConnection: $(serviceConnection)
-          packerConfigFile: images/linux/ubuntu2204.pkr.hcl
-          imageDefinition: devops-ubuntu
-          sharedImagePrefix: azure-devops-agent
+          packerConfigFile: $(packerConfigFile)
+          imageDefinition: $(imageDefinition)
+

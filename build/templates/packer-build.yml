@@ -16,19 +16,7 @@ parameters:
   - name: imageDefinition
     type: string
 
-  - name: sharedImagePrefix
-    type: string
-
 steps:
-- pwsh: |
-    packer fmt -recursive -check .
-  displayName: Packer Format
-
-- pwsh: |
-    $packerFile = "${{ parameters.packerConfigFile }}"
-    packer validate $packerFile
-  displayName: Packer Validate
-
 - task: AzureCLI@2
   displayName: Packer Build Image
   inputs:
@@ -37,7 +25,6 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       $packerFile = "${{ parameters.packerConfigFile }}"
-
       packer build -force $packerFile
 
 - task: AzureCLI@2
@@ -61,27 +48,3 @@ steps:
           az sig image-version delete --resource-group $galleryResourceGroup --gallery-name $computeGallery --gallery-image-definition $imageDefinition --gallery-image-version $imageName
         }
       }
-
-# - task: AzureCLI@2
-#   displayName: Remove Shared Images
-#   inputs:
-#     serviceConnection: ${{ parameters.serviceConnection }}
-#     scriptType: pscore
-#     scriptLocation: inlineScript
-#     inlineScript: |
-#       $computeGalleryResourceGroup = "${{ parameters.galleryResourceGroup }}"
-#       $sharedImagePrefix = "${ parameters.sharedImagePrefix }}"
-
-#       $images = az image list -g $computeGalleryResourceGroup --query "[? contains(name,'$sharedImagePrefix')]" | ConvertFrom-Json
-
-#       foreach ($image in $images) {
-#         $imageName = $image.Name
-#         $imageDate = ($image.Name -Split '-')[2]
-#         $oldDate = (Get-Date).AddDays(-60)
-#         $oldImageDate = Get-Date -Date $oldDate -Format 'ddMMyyyy'
-
-#         if ($imageDate -lt $oldImageDate) {
-#           Write-Host "##[warning]Deleting Image $imageName, Please Wait..."
-#           az image delete -g vh-infra-ado-$env-rg -n $imageName
-#         }
-#       }
