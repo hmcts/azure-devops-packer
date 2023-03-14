@@ -78,6 +78,10 @@ variable "gallery_name" {
   default = "hmcts"
 }
 
+locals {
+  image_version = "${formatdate("YYYYMMDD", timestamp())}.0.0"
+}
+
 
 source "azure-arm" "build_vhd" {
   build_resource_group_name = var.build_resource_group_name
@@ -98,7 +102,7 @@ source "azure-arm" "build_vhd" {
   shared_image_gallery_destination {
     gallery_name   = var.gallery_name
     image_name     = var.image_definition_name
-    image_version  = "${formatdate("YYYYMMDD", timestamp())}.0.0"
+    image_version  = local.image_version
     resource_group = var.build_resource_group_name
     subscription   = var.subscription_id
   }
@@ -162,13 +166,13 @@ build {
   }
 
   provisioner "shell" {
-    environment_vars = ["IMAGE_VERSION=${var.image_version}", "IMAGEDATA_FILE=${var.imagedata_file}"]
+    environment_vars = ["IMAGE_VERSION=${local.image_version}", "IMAGEDATA_FILE=${var.imagedata_file}"]
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     scripts          = ["${path.root}/scripts/installers/preimagedata.sh"]
   }
 
   provisioner "shell" {
-    environment_vars = ["IMAGE_VERSION=${var.image_version}", "IMAGE_OS=${var.image_os}", "HELPER_SCRIPTS=${var.helper_script_folder}"]
+    environment_vars = ["IMAGE_VERSION=${local.image_version}", "IMAGE_OS=${var.image_os}", "HELPER_SCRIPTS=${var.helper_script_folder}"]
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     scripts          = ["${path.root}/scripts/installers/configure-environment.sh"]
   }

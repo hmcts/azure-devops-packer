@@ -24,6 +24,11 @@ steps:
     packer fmt -recursive -check .
   displayName: Packer Format
 
+- pwsh:
+    $packerFile = "${{ parameters.packerConfigFile }}"
+    packer validate $packerFile
+  displayName: Packer Validate
+
 - task: AzureCLI@2
   displayName: Packer Build Image
   inputs:
