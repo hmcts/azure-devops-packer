@@ -61,4 +61,3 @@ stages:
           serviceConnection: $(serviceConnection)
           packerConfigFile: $(packerConfigFile)
           imageDefinition: $(imageDefinition)
-
