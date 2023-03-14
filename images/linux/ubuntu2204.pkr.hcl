@@ -28,10 +28,6 @@ variable "image_os" {
   default = "ubuntu22"
 }
 
-variable "image_version" {
-  type = string
-}
-
 variable "imagedata_file" {
   type    = string
   default = "/imagegeneration/imagedata.json"
