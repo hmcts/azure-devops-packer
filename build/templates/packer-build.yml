@@ -5,9 +5,6 @@ parameters:
   - name: packerConfigFile
     type: string
 
-  - name: packerVarFile
-    type: string
-
   - name: galleryResourceGroup
     type: string
     default: hmcts-image-gallery-rg
