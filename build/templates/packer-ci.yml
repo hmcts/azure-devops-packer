@@ -1,0 +1,13 @@
+parameters:
+  - name: packerConfigFile
+    type: string
+
+steps:
+- pwsh: |
+    packer fmt -recursive -check .
+  displayName: Packer Format
+
+- pwsh: |
+    $packerFile = "${{ parameters.packerConfigFile }}"
+    packer validate $packerFile
+  displayName: Packer Validate

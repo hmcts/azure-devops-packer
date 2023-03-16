@@ -1,0 +1,63 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - images/linux/**
+    exclude:
+    - /**
+
+pr:
+  branches:
+    include:
+    - master
+
+schedules:
+- cron: "0 0 1 * *"
+  displayName: Monthly Image Build
+  branches:
+    include:
+    - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+##############################
+# Variables. #################
+variables:
+  - name: serviceConnection
+    value: GlobalNetworkPeering
+  
+  - name: packerConfigFile
+    value: images/linux/ubuntu2204.pkr.hcl
+
+  - name: imageDefinition
+    value: devops-ubuntu
+
+############################################
+# Packer Build. ############################
+stages:
+- ${{ if contains(variables['Build.SourceBranch'], 'refs/pull') }}:
+  - stage: PackerCI
+    displayName: Packer CI
+    jobs:
+    - job: PackerCI
+      displayName: Packer CI
+      steps:
+      - template: /build/templates/packer-ci.yml
+        parameters:
+          packerConfigFile: $(packerConfigFile)
+
+- ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+  - stage: PackerBuild
+    displayName: Packer Build
+    jobs:
+    - job: PackerBuild
+      displayName: Packer Build
+      steps:
+      - template: /build/templates/packer-build.yml
+        parameters:
+          serviceConnection: $(serviceConnection)
+          packerConfigFile: $(packerConfigFile)
+          imageDefinition: $(imageDefinition)
