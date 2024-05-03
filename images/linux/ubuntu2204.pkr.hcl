@@ -254,7 +254,11 @@ build {
     environment_vars = ["RUN_VALIDATION=${var.run_validation_diskspace}"]
     scripts          = ["${path.root}/scripts/installers/validate-disk-space.sh"]
   }
-
+  provisioner "shell" {
+    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}", "INSTALLER_SCRIPT_FOLDER=${var.installer_script_folder}", "RUN_VALIDATION=${var.run_validation_diskspace}"]
+    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    scripts          = ["packer plugins install github.com/hashicorp/azure"]
+  }
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     inline          = ["mkdir -p /etc/vsts"]
