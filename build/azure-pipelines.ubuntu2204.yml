@@ -2,7 +2,6 @@ trigger:
   branches:
     include:
     - master
-    - VIH-10667-Packer-Fix
   paths:
     include:
     - images/linux/**
@@ -13,7 +12,6 @@ pr:
   branches:
     include:
     - master
-    - VIH-10667-Packer-Fix
 
 schedules:
 - cron: "0 0 1 * *"
