@@ -91,6 +91,7 @@ locals {
   image_version = "${formatdate("YYYYMMDD", timestamp())}.0.0"
 }
 
+
 source "azure-arm" "build_vhd" {
   build_resource_group_name = var.build_resource_group_name
 
@@ -120,6 +121,10 @@ source "azure-arm" "build_vhd" {
 
 build {
   sources = ["source.azure-arm.build_vhd"]
+  
+  provisioner "shell" {
+        inline = ["packer init"]
+  }
 
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
