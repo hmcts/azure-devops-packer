@@ -1,3 +1,12 @@
+packer {
+    required_plugins {
+        azure = {
+            version = ">= 2.0.1"
+            source  = "github.com/hashicorp/azure"
+        }
+    }
+}
+
 variable "build_resource_group_name" {
   type    = string
   default = "hmcts-image-gallery-rg"
