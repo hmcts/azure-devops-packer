@@ -91,8 +91,6 @@ packer {
   }
 }
 
-packer init 
-
 source "azure-arm" "build_vhd" {
   build_resource_group_name = var.build_resource_group_name
 
