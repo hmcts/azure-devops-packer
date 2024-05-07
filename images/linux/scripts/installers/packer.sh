@@ -5,6 +5,7 @@
 ################################################################################
 
 source $HELPER_SCRIPTS/install.sh
+packer plugins install github.com/hashicorp/azure
 
 # Install Packer
 apt install unzip -y 
