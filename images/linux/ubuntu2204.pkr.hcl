@@ -122,10 +122,6 @@ source "azure-arm" "build_vhd" {
 build {
   sources = ["source.azure-arm.build_vhd"]
   
-   provisioner "shell" {
-     inline = ["packer init"]
-  }
-
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     inline          = ["mkdir ${var.image_folder}", "chmod 777 ${var.image_folder}"]
