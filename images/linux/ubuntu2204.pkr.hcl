@@ -1,3 +1,12 @@
+packer {
+  required_plugins {
+    azure = {
+      source  = "github.com/hashicorp/azure"
+      version = "~> 2"
+    }
+  }
+}
+
 variable "build_resource_group_name" {
   type    = string
   default = "hmcts-image-gallery-rg"
@@ -80,15 +89,6 @@ variable "gallery_name" {
 
 locals {
   image_version = "${formatdate("YYYYMMDD", timestamp())}.0.0"
-}
-
-packer {
-    required_plugins {
-        azure = {
-            version = ">= 2.0.1"
-            source  = "github.com/hashicorp/azure"
-        }
-    }
 }
 
 source "azure-arm" "build_vhd" {
