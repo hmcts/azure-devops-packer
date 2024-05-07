@@ -122,8 +122,8 @@ source "azure-arm" "build_vhd" {
 build {
   sources = ["source.azure-arm.build_vhd"]
   
-  provisioner "shell" {
-        inline = ["packer init"]
+   provisioner "shell" {
+     inline = ["packer init"]
   }
 
   provisioner "shell" {
