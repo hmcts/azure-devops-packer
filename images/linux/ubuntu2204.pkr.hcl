@@ -82,8 +82,16 @@ locals {
   image_version = "${formatdate("YYYYMMDD", timestamp())}.0.0"
 }
 
+packer {
+  required_plugins {
+    azure = {
+      source  = "github.com/hashicorp/azure"
+      version = "~> 2"
+    }
+  }
+}
 
-packer plugins install github.com/hashicorp/azure
+packer init 
 
 source "azure-arm" "build_vhd" {
   build_resource_group_name = var.build_resource_group_name
