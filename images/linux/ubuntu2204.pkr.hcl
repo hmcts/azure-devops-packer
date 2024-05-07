@@ -148,11 +148,6 @@ build {
     script          = "${path.root}/scripts/base/limits.sh"
   }
 
-  provisioner "shell" {
-    execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    inline = ["packer init"]
-  }
-
   provisioner "file" {
     destination = "${var.helper_script_folder}"
     source      = "${path.root}/scripts/helpers"
@@ -276,5 +271,10 @@ build {
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     inline          = ["sleep 30", "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"]
+  }
+
+  provisioner "shell" {
+    execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    inline          = ["packer init"]
   }
 }
