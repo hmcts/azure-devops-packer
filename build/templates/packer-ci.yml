@@ -4,6 +4,10 @@ parameters:
 
 steps:
 - pwsh: |
+    packer init
+  displayName: Packer Init
+  
+- pwsh: |
     packer fmt -recursive -check .
   displayName: Packer Format
 
