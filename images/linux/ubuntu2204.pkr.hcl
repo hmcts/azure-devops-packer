@@ -7,8 +7,6 @@ packer {
   }
 }
 
-packer plugins install github.com/hashicorp/azure
-
 variable "build_resource_group_name" {
   type    = string
   default = "hmcts-image-gallery-rg"
