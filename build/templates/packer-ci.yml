@@ -5,7 +5,7 @@ parameters:
 steps:
 - pwsh: |
     packer plugins install github.com/hashicorp/azure
-  displayName: Packer plugins
+  displayName: Packer Plugin
   
 - pwsh: |
     packer fmt -recursive -check .
