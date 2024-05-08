@@ -7,6 +7,7 @@
 source $HELPER_SCRIPTS/install.sh
 
 # Install Packer
+packer init
 apt install unzip -y 
 URL=$(curl -s https://api.releases.hashicorp.com/v1/releases/packer/latest | jq -r '.builds[] | select((.arch=="amd64") and (.os=="linux")).url')
 ZIP_NAME="packer_linux_amd64.zip"
