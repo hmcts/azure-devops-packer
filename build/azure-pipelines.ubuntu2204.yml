@@ -11,7 +11,7 @@ trigger:
 pr:
   branches:
     include:
-    - master
+    - VIH-10724-Packer-Issue
 
 schedules:
 - cron: "0 0 1 * *"
