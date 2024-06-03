@@ -38,7 +38,7 @@ variables:
 ############################################
 # Packer Build. ############################
 stages:
-- ${{ if contains(variables['Build.SourceBranch'], 'refs/pull') }}:
+#- ${{ if contains(variables['Build.SourceBranch'], 'refs/pull') }}:
   - stage: PackerCI
     displayName: Packer CI
     jobs:
@@ -49,7 +49,7 @@ stages:
         parameters:
           packerConfigFile: $(packerConfigFile)
 
-- ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+#- ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
   - stage: PackerBuild
     displayName: Packer Build
     jobs:
