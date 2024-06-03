@@ -4,10 +4,6 @@ parameters:
 
 steps:
 - pwsh: |
-    packer plugins install github.com/hashicorp/azure
-  displayName: Packer Plugin
-  
-- pwsh: |
     packer fmt -recursive -check .
   displayName: Packer Format
 
