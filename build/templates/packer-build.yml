@@ -26,6 +26,8 @@ steps:
     inlineScript: |
       $packerFile = "${{ parameters.packerConfigFile }}"
       packer build -force $packerFile
+      packer plugins install github.com/hashicorp/azure
+
 
 - task: AzureCLI@2
   displayName: Remove Old Image Versions
