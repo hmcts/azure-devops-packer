@@ -28,6 +28,15 @@ steps:
       packer build -force $packerFile
 
 - task: AzureCLI@2
+  displayName: Packer Packages
+  inputs:
+    azureSubscription: ${{ parameters.serviceConnection }}
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+      packer plugins install github.com/hashicorp/azure
+
+- task: AzureCLI@2
   displayName: Remove Old Image Versions
   inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
