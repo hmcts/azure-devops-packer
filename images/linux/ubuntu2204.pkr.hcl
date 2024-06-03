@@ -55,7 +55,7 @@ variable "subscription_id" {
 
 variable "vm_size" {
   type    = string
-  default = "Standard_D4s_v4"
+  default = "Standard_D4s_v5"
 }
 
 variable "image_definition_name" {
